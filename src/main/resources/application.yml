@@ -1,0 +1,29 @@
+# 해당 서버 포트
+server:
+  port: 8081
+  address: 0.0.0.0
+
+# account.sql
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://220.67.216.14:13306/nhn_academy_39?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: nhn_academy_39
+    password: "*6]fBj1*QmPlpH2c"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+
+# RestTemplate이 호출할 주소
+api:
+  gateway:
+    url: http://localhost:8080
+  task:
+    url: http://10.201.235.221:8082

@@ -1,0 +1,30 @@
+### 회원가입
+POST http://localhost:8081/members/register
+Content-Type: application/json
+
+{
+  "username": "kim",
+  "email": "kim123@example.com",
+  "password": "kim123"
+}
+
+### 로그인 요청
+POST http://localhost:8081/members/login
+Content-Type: application/json
+
+{
+  "username": "kim",
+  "password": "kim123"
+}
+
+### 회원 단건 조회
+GET http://localhost:8081/members/kim
+
+### 회원 상태 변경
+PATCH http://localhost:8081/members/charlie/status
+Content-Type: application/json
+
+{
+  "status": "ACTIVE"
+}
+
