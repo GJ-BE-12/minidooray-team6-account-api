@@ -24,6 +24,13 @@ spring:
 # RestTemplate이 호출할 주소
 api:
   gateway:
-    url: http://localhost:8080
+    url: http://172.20.97.32:8080
   task:
     url: http://10.201.235.221:8082
+
+
+# 로그 바인딩 값 추가
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE

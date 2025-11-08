@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Status {
-    //가입, 탈퇴, 휴면
-    ACTIVE, DELETED, DORMANT;
+    //가입, 휴면, 탈퇴
+    ACTIVE, DORMANT, WITHDRAWN;
 
     @JsonCreator
     public static Status formString(String s) {

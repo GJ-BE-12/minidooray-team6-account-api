@@ -1,5 +1,5 @@
 ### 회원가입
-POST http://localhost:8081/members/register
+POST http://localhost:8081/users/register
 Content-Type: application/json
 
 {
@@ -8,23 +8,39 @@ Content-Type: application/json
   "password": "kim123"
 }
 
-### 로그인 요청
-POST http://localhost:8081/members/login
+### 로그인
+POST http://localhost:8081/users/login
 Content-Type: application/json
 
 {
   "username": "kim",
-  "password": "kim123"
+  "password": "kim1234"
 }
 
 ### 회원 단건 조회
-GET http://localhost:8081/members/kim
+GET http://localhost:8081/users/kim
+X-USER-ID: kim
 
-### 회원 상태 변경
-PATCH http://localhost:8081/members/charlie/status
+
+### 이메일 변경
+PUT http://localhost:8081/users/kim
 Content-Type: application/json
+X-USER-ID: kim
 
 {
-  "status": "ACTIVE"
+  "email": "kim123@example.com"
 }
+
+### 비밀번호 변경
+PUT http://localhost:8081/users/kim/password
+Content-Type: application/json
+X-USER-ID: kim
+
+{
+  "currentPassword": "kim1234",
+  "newPassword": "kim123",
+  "confirmPassword": "kim123"
+}
+
+
 

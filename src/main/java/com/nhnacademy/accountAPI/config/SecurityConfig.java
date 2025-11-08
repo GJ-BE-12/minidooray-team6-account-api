@@ -18,15 +18,13 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/members/register", "/members/login").permitAll()
-                        .requestMatchers("/members/internal/**").hasAuthority("INTERNAL") // 예: 내부 토큰 필터로 권한 부여
+                        .requestMatchers(HttpMethod.POST, "/users/register", "/users/login").permitAll()
+                        .requestMatchers("/internal/**").hasAuthority("INTERNAL") // 예: 내부 토큰 필터로 권한 부여
                         .anyRequest().permitAll()
                 );
         return http.build();
     }
-
 
 }

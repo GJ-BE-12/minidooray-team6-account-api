@@ -1,62 +1,70 @@
 package com.nhnacademy.accountAPI.controller;
 
-import com.nhnacademy.accountAPI.domain.dto.LoginRequest;
-import com.nhnacademy.accountAPI.domain.dto.MemberCreateCommand;
-import com.nhnacademy.accountAPI.domain.dto.StatusRequest;
-import com.nhnacademy.accountAPI.domain.entity.Member;
-import com.nhnacademy.accountAPI.exception.LoginFailException;
+import com.nhnacademy.accountAPI.domain.dto.*;
+import com.nhnacademy.accountAPI.service.MemberAuthService;
 import com.nhnacademy.accountAPI.service.MemberService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
-
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
-    }
-
     // 1. 회원가입
     @PostMapping("/register")
-    public ResponseEntity<Member> registerMember(@Valid @RequestBody MemberCreateCommand memberCreateCommand) {
-        Member member = memberService.register(memberCreateCommand);
-        return ResponseEntity.status(HttpStatus.CREATED).body(member);
+    public ResponseEntity<Void> register(@Valid @RequestBody AccountRegisterRequest request) {
+        memberService.register(request);
+        return ResponseEntity.status(201).build();
     }
 
-
-    // 2. 로그인
+    // 2. 로그인 (성공 시 lastLoginAt 갱신 + username만 반환)
     @PostMapping("/login")
-    public Member login(@Valid @RequestBody LoginRequest request) {
-        if (memberService.matches(request.getUsername(), request.getPassword())) {
-            return memberService.getByUsername(request.getUsername());
+    public ResponseEntity<AccountLoginResponse> login(@Valid @RequestBody AccountLoginRequest request) {
+        return memberService.login(request.username(), request.password())
+                .map(username -> ResponseEntity.ok(new AccountLoginResponse(username)))
+                .orElseGet(() -> ResponseEntity.status(401).build());
+    }
+
+    // 3. 멤버 단건 조회 (비밀번호 제외)
+    @GetMapping("/{userId}")
+    public ResponseEntity<AccountDto> get(@PathVariable String username) {
+        return ResponseEntity.ok(memberService.getProfile(username));
+    }
+
+    // 4-1. 회원 정보 수정 (email) — X-USER-ID 검증
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateEmail(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody AccountUpdateRequest request) {
+        if (!username.equals(headerUserId)) {
+            return ResponseEntity.status(403).build(); // 본인 아님
         }
-        throw new LoginFailException(request.getUsername()+": login fail");
+        memberService.updateEmail(username, request);
+        return ResponseEntity.ok().build(); // 200 OK, body 없음
     }
 
-
-    // 3. 멤버 (단건) 조회
-    @GetMapping("/{username}")
-    public Member getMember(@PathVariable String username) {
-        Member member = memberService.getByUsername(username);
-        if (Objects.isNull(member)) {
-            throw new IllegalArgumentException("Member not found with ID: " + username);
+    // 4-2. 회원 정보 수정 (비밀번호 변경) — X-USER-ID 검증
+    @PutMapping("/{userId}/password")
+    public ResponseEntity<Void> updatePassword(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody PasswordUpdateRequest request) {
+        if (!username.equals(headerUserId)) {
+            return ResponseEntity.status(403).build();
         }
-        return member;
+        memberService.updatePassword(username, request);
+        return ResponseEntity.ok().build();
     }
 
-    // 4. 상태 변경
-    @PatchMapping("/{username}/status")
-    public Member updateStatus(@PathVariable String username, @Valid @RequestBody StatusRequest request) {
-        return memberService.updateStatus(username, request.getStatus());
+    // 5. 회원 탈퇴 — X-USER-ID 검증
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> delete(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId) {
+        if (!username.equals(headerUserId)) {
+            return ResponseEntity.status(403).build();
+        }
+        memberService.delete(username);
+        return ResponseEntity.noContent().build();
     }
-
 }
 
 
