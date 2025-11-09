@@ -1,4 +1,4 @@
-### 회원가입
+### 1. 회원가입
 POST http://localhost:8081/users/register
 Content-Type: application/json
 
@@ -8,21 +8,23 @@ Content-Type: application/json
   "password": "kim123"
 }
 
-### 로그인
+
+### 2. 로그인
 POST http://localhost:8081/users/login
 Content-Type: application/json
 
 {
   "username": "kim",
-  "password": "kim1234"
+  "password": "kim123"
 }
 
-### 회원 단건 조회
+
+### 3. 회원 단건 조회
 GET http://localhost:8081/users/kim
 X-USER-ID: kim
 
 
-### 이메일 변경
+### 4-1. 이메일 변경
 PUT http://localhost:8081/users/kim
 Content-Type: application/json
 X-USER-ID: kim
@@ -31,7 +33,8 @@ X-USER-ID: kim
   "email": "kim123@example.com"
 }
 
-### 비밀번호 변경
+
+###  4-2. 비밀번호 변경
 PUT http://localhost:8081/users/kim/password
 Content-Type: application/json
 X-USER-ID: kim
@@ -42,5 +45,27 @@ X-USER-ID: kim
   "confirmPassword": "kim123"
 }
 
+
+### 5) 인증 체크 (게이트웨이 내부용)
+POST http://localhost:8081/users/auth/check
+Content-Type: application/json
+
+{
+  "username": "kim",
+  "password": "kim123"
+}
+
+
+### 6) 키워드 검색 (username/email LIKE)
+GET http://localhost:8081/users?query=im
+
+
+### 7) 일괄 조회
+GET http://localhost:8081/users?usernames=kim,lee,park
+
+
+### 8) 회원 탈퇴 (Soft Delete, 보호 엔드포인트)
+DELETE http://localhost:8081/users/lim
+X-USER-ID: lim
 
 

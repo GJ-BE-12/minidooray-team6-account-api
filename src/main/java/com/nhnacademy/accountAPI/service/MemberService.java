@@ -10,6 +10,7 @@ import com.nhnacademy.accountAPI.exception.MemberAlreadyExistsException;
 import com.nhnacademy.accountAPI.exception.MemberNotFoundException;
 import com.nhnacademy.accountAPI.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,9 +49,11 @@ public class MemberService{
     @Transactional
     public Optional<String> login(String username, String password) {
         return memberRepository.findByUsername(username)
+                .filter(member -> member.getStatus() != Status.WITHDRAWN) // 로그인 시 status = "탈퇴"이면 로그인 불가
                 .filter(member -> passwordEncoder.matches(password, member.getPassword()))
-                .map(member -> { member.setLastLoginAt(LocalDateTime.now()); // 성공 시점에만 갱신
-                                         return member.getUsername(); // userId 반환
+                .map(member -> {
+                    member.setLastLoginAt(LocalDateTime.now()); // 성공 시점에만 갱신
+                    return member.getUsername(); // username 반환
                 });
     }
 

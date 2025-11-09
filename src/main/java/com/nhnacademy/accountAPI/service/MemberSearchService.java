@@ -18,7 +18,7 @@ public class MemberSearchService {
 
     // 1. 키워드를 통한 검색
     // GET /users?query={searchKeyword}
-    public List<Member> search(String searchKeyword) {
+    public List<Member> searchKeyword(String searchKeyword) {
         String keyword = (searchKeyword == null) ? "" : searchKeyword.trim();
         return memberRepository.findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
     }

@@ -32,37 +32,37 @@ public class MemberController {
 
     // 3. 멤버 단건 조회 (비밀번호 제외)
     @GetMapping("/{userId}")
-    public ResponseEntity<AccountDto> get(@PathVariable String username) {
-        return ResponseEntity.ok(memberService.getProfile(username));
+    public ResponseEntity<AccountDto> get(@PathVariable String userId) {
+        return ResponseEntity.ok(memberService.getProfile(userId));
     }
 
     // 4-1. 회원 정보 수정 (email) — X-USER-ID 검증
     @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateEmail(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody AccountUpdateRequest request) {
-        if (!username.equals(headerUserId)) {
+    public ResponseEntity<Void> updateEmail(@PathVariable String userId, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody AccountUpdateRequest request) {
+        if (!userId.equals(headerUserId)) {
             return ResponseEntity.status(403).build(); // 본인 아님
         }
-        memberService.updateEmail(username, request);
+        memberService.updateEmail(userId, request);
         return ResponseEntity.ok().build(); // 200 OK, body 없음
     }
 
     // 4-2. 회원 정보 수정 (비밀번호 변경) — X-USER-ID 검증
     @PutMapping("/{userId}/password")
-    public ResponseEntity<Void> updatePassword(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody PasswordUpdateRequest request) {
-        if (!username.equals(headerUserId)) {
+    public ResponseEntity<Void> updatePassword(@PathVariable String userId, @RequestHeader("X-USER-ID") String headerUserId, @Valid @RequestBody PasswordUpdateRequest request) {
+        if (!userId.equals(headerUserId)) {
             return ResponseEntity.status(403).build();
         }
-        memberService.updatePassword(username, request);
+        memberService.updatePassword(userId, request);
         return ResponseEntity.ok().build();
     }
 
     // 5. 회원 탈퇴 — X-USER-ID 검증
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> delete(@PathVariable String username, @RequestHeader("X-USER-ID") String headerUserId) {
-        if (!username.equals(headerUserId)) {
+    public ResponseEntity<Void> delete(@PathVariable String userId, @RequestHeader("X-USER-ID") String headerUserId) {
+        if (!userId.equals(headerUserId)) {
             return ResponseEntity.status(403).build();
         }
-        memberService.delete(username);
+        memberService.delete(userId);
         return ResponseEntity.noContent().build();
     }
 }
