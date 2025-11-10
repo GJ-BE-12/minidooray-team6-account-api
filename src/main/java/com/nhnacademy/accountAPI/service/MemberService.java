@@ -65,6 +65,7 @@ public class MemberService{
         return new AccountDto(member.getId(), member.getUsername(), member.getEmail(), String.valueOf(member.getStatus()), member.getCreatedAt(), member.getLastLoginAt());
     }
 
+
     // 5-1. 회원 정보 수정 (이메일 변경)
     @Transactional
     public void updateEmail(String username, AccountUpdateRequest request) {

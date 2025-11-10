@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://220.67.216.14:13306/nhn_academy_39?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://10.116.64.14:13306/nhn_academy_39?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: nhn_academy_39
     password: "*6]fBj1*QmPlpH2c"
 
