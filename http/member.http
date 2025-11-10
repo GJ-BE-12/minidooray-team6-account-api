@@ -1,0 +1,80 @@
+### 1) 회원가입
+POST http://localhost:8081/users/register
+Content-Type: application/json
+
+{
+  "username": "yang",
+  "email": "yang123@example.com",
+  "password": "yang123"
+}
+
+
+### 2) 로그인
+POST http://localhost:8081/users/login
+Content-Type: application/json
+
+{
+  "username": "kim",
+  "password": "kim123"
+}
+
+### 3) 로그아웃
+POST http://localhost:8081/users/kim/logout
+X-USER-ID: 1
+
+
+### 4). 회원 단건 조회
+GET http://localhost:8081/users/kim
+X-USER-ID: 1
+
+
+### 5-1) 이메일 변경
+PUT http://localhost:8081/users/kim
+Content-Type: application/json
+X-USER-ID: 1
+
+{
+  "email": "kim123@example.com"
+}
+
+
+###  5-2) 비밀번호 변경
+PUT http://localhost:8081/users/kim/password
+Content-Type: application/json
+X-USER-ID: 1
+
+{
+  "currentPassword": "kim123",
+  "newPassword": "kim1234",
+  "confirmPassword": "kim1234"
+}
+
+
+#### 5) 인증 체크 (게이트웨이 내부용)
+#POST http://localhost:8081/users/auth/check
+#Content-Type: application/json
+#
+#{
+#  "username": "kim",
+#  "password": "kim123"
+#}
+
+
+### 6) 멤버 키워드 검색 (username/email LIKE)
+GET http://localhost:8081/users?query=im
+
+
+### 7) 멤버 일괄 검색
+GET http://localhost:8081/users/batch?ids=1,2,3
+
+
+### 8) 회원 탈퇴 (Soft Delete, 보호 엔드포인트)
+DELETE http://localhost:8081/users/choi
+X-USER-ID: 7
+
+
+### 테스트용) 회원 상태 변경
+PUT http://localhost:8081/users/tim/status?status=DORMANT
+
+
+
