@@ -19,12 +19,12 @@ public class MemberAuthController {
     // 1.비밀번호 대조 성공 여부 (게이트웨이에 boolean으로 전송)
     @PostMapping("/auth/check")
     public ResponseEntity<AuthCheckResponse> checkPassword(@RequestBody @Valid AccountLoginRequest request) {
-        boolean ok = memberAuthService.matches(request.username(), request.password());
-        return ok ? ResponseEntity.ok(new AuthCheckResponse(true, "OK"))
-                : ResponseEntity.status(401).body(new AuthCheckResponse(false, "INVALID_CREDENTIALS"));
+        boolean ok = memberAuthService.matches(request.getUsername(), request.getPassword());
+        return ok ? ResponseEntity.ok(new AuthCheckResponse(true/*, "OK"*/))
+                : ResponseEntity.status(401).body(new AuthCheckResponse(false/*, "INVALID_CREDENTIALS"*/));
     }
 
     // Account-API가 비교 후 결과를 돌려줄 때 필요
-    public record AuthCheckResponse(boolean valid, String reason) {}
+    public record AuthCheckResponse(boolean valid/*, String reason*/) {}
 }
 

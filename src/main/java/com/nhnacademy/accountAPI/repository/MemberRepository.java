@@ -24,7 +24,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // Task.api에서 받는 username 목록으로 사용자 일괄 조회
     // GET /users?ids={id1},{id2},{id3}
-    List<Member> findByUsernameIn(Collection<String> usernames);
+//    List<Member> findByUsernameIn(Collection<String> usernames);
     //    SELECT *
     //    FROM member
     //    WHERE username IN (:usernames);

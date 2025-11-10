@@ -34,14 +34,14 @@ public class Member {
     @Column(name="created_at", nullable=false, updatable=false)
     private LocalDateTime createdAt;
 
-    // ✅ 로그인 성공 시에만 명시적으로 갱신할 필드이므로 Auditing/PreUpdate 제거
+    // 로그인 성공 시에만 명시적으로 갱신할 필드이므로 Auditing/PreUpdate 제거
     @Column(name="last_login_at")
     private LocalDateTime lastLoginAt;
 
-    protected Member() {}
-    public Member(AccountRegisterRequest req, String encodedPassword) {
-        this.username = req.username();
-        this.email = req.email();
+    public Member() {}
+    public Member(AccountRegisterRequest request, String encodedPassword) {
+        this.username = request.getUsername();
+        this.email = request.getEmail();
         this.password = encodedPassword;
         this.status = Status.ACTIVE;
     }

@@ -1,12 +1,24 @@
 package com.nhnacademy.accountAPI.domain.dto;
 
-import com.nhnacademy.accountAPI.domain.entity.Status;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public record AccountDto(
-        String username,
-        String email,
-        Status status,
-        LocalDateTime createdAt,
-        LocalDateTime lastLoginAt) {}
+/**
+ * accountAPI에서 회원정보를 조회하여 gateway로 받아올때 사용
+ */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AccountDto {
+    private Long accountId;
+    private String username;
+    private String email;
+    private String status;
+    private LocalDateTime createdAt;
+    private LocalDateTime latestLoginAt;
+}

@@ -23,10 +23,10 @@ public class MemberSearchService {
         return memberRepository.findByUsernameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
     }
 
-    // 2. usernames 리스트를 통한 일괄 조회
+    // 2. id 리스트를 통한 일괄 조회
     // GET /users?ids={id1},{id2},{id3}
-    public List<Member> findBatchByUsernames(List<String> usernames) {
-        if (usernames == null || usernames.isEmpty()) return List.of();
-        return memberRepository.findByUsernameIn(usernames);
+    public List<Member> findBatchByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) return List.of();
+        return memberRepository.findAllById(ids);
     }
 }
